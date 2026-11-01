@@ -27,7 +27,7 @@ const ROUTES = [
   [/^#\/sos\/breathe$/, sos.breatheView, null],
   [/^#\/sos\/thought$/, sos.thoughtView, null],
   [/^#\/sos\/park$/, sos.parkView, null],
-  [/^#\/facts$/, sos.factsView, null],
+  [/^#\/(facts|quotes)$/, sos.factsView, null],
 ];
 
 const ACTIONS = { ...today.actions, ...habit.actions, ...mood.actions, ...stats.actions, ...more.actions, ...review.actions, ...welcome.actions, ...sos.actions };

@@ -40,6 +40,46 @@ export const FACTS = {
   ],
 };
 
+// Sprüche nur zum selbst Durchblättern, nicht automatisch an schlechten Tagen.
+// Bewusst bodenständig statt „Du bist großartig!“, und Zitate nur mit gesicherter Herkunft.
+export const QUOTES = {
+  start: [
+    { text: 'Du musst heute nicht alles schaffen. Nur den nächsten kleinen Schritt.' },
+    { text: 'Anfangen ist der schwerste Teil. Darum darf er winzig sein.' },
+    { text: 'Erst kommt die Handlung, dann die Motivation. Nicht umgekehrt.' },
+    { text: 'Was du heute tust, muss nicht beeindruckend sein. Nur echt.' },
+    { text: 'Langsam ist auch eine Geschwindigkeit.' },
+    { text: 'Fortschritt sieht von nahem oft aus wie Stillstand. Von weitem sieht man ihn.' },
+    { text: 'Ein Versprechen an dich selbst zählt genauso wie eins an andere. Fang mit einem kleinen an.' },
+  ],
+  hard: [
+    { text: 'Ein schlechter Tag ist ein schlechter Tag. Kein schlechtes Leben.' },
+    { text: 'Mini zählt. Immer.' },
+    { text: 'Nicht perfekt. Aber dabei.' },
+    { text: 'Du hast bisher jeden schweren Tag überstanden. Jeden einzelnen.' },
+    { text: 'Hinfallen gehört dazu. Wie schnell du wieder aufstehst, ist egal. Hauptsache, du tust es.' },
+    { text: 'Heute reicht es, wenn du es versuchst.' },
+    { text: 'Sei für dich der Freund, den du gerade brauchst.' },
+    { text: 'Du bist nicht hinterher. Du bist da, wo du gerade bist, und von hier geht es weiter.' },
+  ],
+  wisdom: [
+    { text: 'Eine Reise von tausend Meilen beginnt mit einem einzigen Schritt.', source: 'Laozi, Tao Te King' },
+    { text: 'Nicht weil es schwer ist, wagen wir es nicht, sondern weil wir es nicht wagen, ist es schwer.', source: 'Seneca, Briefe an Lucilius' },
+    { text: 'Wir leiden öfter in der Vorstellung als in der Wirklichkeit.', source: 'Seneca, Briefe an Lucilius' },
+    { text: 'Nicht die Dinge selbst beunruhigen die Menschen, sondern ihre Meinungen über die Dinge.', source: 'Epiktet, Handbüchlein der Moral' },
+    { text: 'Was der Handlung im Weg steht, treibt die Handlung voran. Was im Weg steht, wird zum Weg.', source: 'Mark Aurel, Selbstbetrachtungen' },
+    { text: 'Es ist nicht genug, zu wissen, man muss auch anwenden; es ist nicht genug, zu wollen, man muss auch tun.', source: 'Goethe, Wilhelm Meisters Wanderjahre' },
+    { text: 'Das Leben kann nur rückwärts verstanden werden, aber es muss vorwärts gelebt werden.', source: 'Kierkegaard, Tagebücher' },
+    { text: 'Hat man sein Warum des Lebens, so verträgt man sich fast mit jedem Wie.', source: 'Nietzsche, Götzen-Dämmerung' },
+  ],
+};
+
+export const QUOTE_CATEGORIES = {
+  start: 'Zum Anfangen',
+  hard: 'Für harte Tage',
+  wisdom: 'Weisheiten',
+};
+
 export const CATEGORIES = {
   missed: 'Verpasster Tag',
   setback: 'Rückschläge',

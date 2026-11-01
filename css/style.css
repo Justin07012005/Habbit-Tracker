@@ -792,6 +792,25 @@ textarea { resize: vertical; min-height: 70px; }
 .fact-actions { display: flex; gap: 18px; margin-top: 8px; }
 
 .chips.wrap { flex-wrap: wrap; overflow: visible; margin: 0; padding: 0; }
+.tabs {
+  display: grid; grid-template-columns: 1fr 1fr;
+  padding: 4px;
+  background: var(--cream);
+  border: var(--line) solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.tab {
+  padding: 8px 0;
+  text-align: center;
+  font-family: var(--vt); font-size: 22px; line-height: 1;
+  text-decoration: none;
+  border: 2px solid transparent;
+  border-radius: 5px;
+}
+.tab.sel { background: var(--yellow); border-color: var(--ink); }
+.quote-card { background: #fff4ec; }
+.quote-card p { font-style: italic; }
 .fact-big { padding: 18px 18px 16px; min-height: 230px; display: flex; flex-direction: column; }
 .fact-big p { font-size: 20px; line-height: 1.35; font-weight: 600; flex: 1; margin: 6px 0 10px; }
 .fact-count { margin-left: auto; color: var(--ink-soft); }

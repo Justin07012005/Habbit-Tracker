@@ -48,6 +48,8 @@ export function view() {
     <div class="lib-list">
       <a class="lib-item" href="#/facts"><span class="tile bg-yellow">${icon('lightbulb')}</span>
         <span class="lib-text"><b>Fakten durchblättern</b><span>Psychologie, die hilft, mit Quellen. Lieblingsfakten merken.</span></span>${icon('chevron-right')}</a>
+      <a class="lib-item" href="#/quotes"><span class="tile bg-orange">${icon('chat')}</span>
+        <span class="lib-text"><b>Sprüche durchblättern</b><span>Zum Anfangen, für harte Tage und alte Weisheiten.</span></span>${icon('chevron-right')}</a>
       <a class="lib-item" href="#/sos"><span class="tile bg-pink">${icon('heart')}</span>
         <span class="lib-text"><b>SOS</b><span>Atmen, Gedanken-Check, Grübel-Parkplatz und Hilfe.</span></span>${icon('chevron-right')}</a>
     </div>
