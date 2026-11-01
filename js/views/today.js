@@ -6,6 +6,7 @@ import {
   today, addDays, weekday, isoWeekKey, fmtDate, DAY_LONG, habitStats, activeHabits, todayProgress, isPausedNow, isScheduled, INSTALLED,
 } from '../logic.js';
 import { icon, pix, esc, win, bar, pct, face, strengthLabel, blip, burst, floatText, SPARKLE, HEART, MOOD_LABEL } from '../ui.js';
+import { factCard, evidenceWindow, worryWindow } from './sos.js';
 
 const LINES = [
   'Ein kleiner Schritt reicht.',
@@ -112,6 +113,17 @@ export function view() {
   const fresh = weekday(day) === 0 ? 'Neue Woche, frischer Start. Was letzte Woche war, ist vorbei.'
     : day.endsWith('-01') ? 'Neuer Monat. Ein guter Moment, neu anzufangen.' : null;
   const freshKey = `fresh-${day}`;
+  // Welche Fakten-Karte passt gerade? Schlechte Stimmung zuerst, dann Rückschläge.
+  const mood = state.moods[day]?.mood;
+  const showFresh = fresh && !state.settings.dismissed[freshKey] && !(mood <= 2);
+  const running = habits.filter((h) => !isPausedNow(h)).map((h) => habitStats(state, h));
+  const factCat = mood && mood <= 2 ? 'badMood'
+    : running.some((s) => s.misses >= 2 && s.total > 0) ? 'setback'
+    : running.some((s) => s.lastMissed) ? 'missed'
+    : isBadDay() ? 'mini'
+    : showFresh ? null : 'general';
+  const factKey = `fact-${day}-${factCat}`;
+  const fact = factCat && habits.length && !state.settings.dismissed[factKey] ? factCard(factCat, factKey) : '';
 
   const progress = win({
     title: 'heute.exe', color: 'orange',
@@ -144,12 +156,21 @@ export function view() {
         <p class="sub">${LINES[doy % LINES.length]}</p>
         <span class="pill">${DAY_LONG[weekday(day)]} · ${fmtDate(day)}</span>
       </div>
-      <a href="#/review" class="icon-btn" aria-label="Wochenrückblick">${icon('mail')}${reviewDue() ? '<b class="dot"></b>' : ''}</a>
+      <div class="head-btns">
+        <a href="#/sos" class="icon-btn sos-btn" aria-label="SOS: Mir geht's gerade nicht gut">SOS</a>
+        <a href="#/review" class="icon-btn" aria-label="Wochenrückblick">${icon('mail')}${reviewDue() ? '<b class="dot"></b>' : ''}</a>
+      </div>
     </header>
 
     ${progress}
 
-    ${fresh && !state.settings.dismissed[freshKey] ? `
+    ${mood && mood <= 2 ? `
+      <a class="sos-banner" href="#/sos">${face(mood, 'face-md')}<span><b>Heute ist ein schwerer Tag.</b><small>Das ist okay. Hier findest du was, das jetzt helfen kann.</small></span>${icon('chevron-right')}</a>
+      ${evidenceWindow()}` : ''}
+
+    ${fact}
+
+    ${showFresh ? `
       <div class="bubble">
         <p>${fresh}</p>
         <button class="link" data-act="dismiss" data-key="${freshKey}">Okay</button>
@@ -165,6 +186,8 @@ export function view() {
       ${off.length ? `<h2 class="section-title">Heute frei</h2><div class="off-list">${off.map(offRow).join('')}</div>` : ''}
       <a class="add-btn" href="#/library">${icon('plus')} Neues Habit</a>
     `}
+
+    ${worryWindow()}
 
     ${moodWindow()}
   `;

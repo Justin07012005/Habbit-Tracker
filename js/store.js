@@ -14,9 +14,12 @@ const fresh = () => ({
   logs: {},     // { 'YYYY-MM-DD': { habitId: 'full' | 'mini' } }
   moods: {},    // { 'YYYY-MM-DD': { mood: 1-5, energy: 1-5, sleep: Stunden, note } }
   reviews: {},  // { 'YYYY-Www': { good, hard, change, savedAt } }
+  thoughts: [], // Gedanken-Checks: { date, thought, before, trap, friend, balanced, after }
+  parked: [],   // Grübel-Parkplatz: { id, text, createdAt, done }
   settings: {
     onboarded: false,
     sound: true,
+    worryTime: '18:00',    // feste Grübelzeit für geparkte Gedanken
     badDay: null,          // Datum, an dem der Mini-Modus aktiv ist
     lastBackup: null,
     dismissed: {},         // einmalige Hinweise, z. B. { 'fresh-2026-W45': true }

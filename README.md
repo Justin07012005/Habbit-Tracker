@@ -10,6 +10,8 @@ Läuft komplett im Browser, offline-fähig, und lässt sich auf dem iPhone zum H
 - **Wenn-dann-Plan** und **Mini-Version** für jedes Habit, plus **Mini-Modus** für harte Tage.
 - **Check-in** mit Stimmung, Energie und Schlaf. Nach 10 Einträgen zeigt die App, was die Stimmung hebt.
 - **Wochenrückblick** am Sonntag.
+- **Fakten statt Sprüche**: passende psychologische Fakten im richtigen Moment (nach verpassten Tagen, bei schlechter Stimmung). Bewusst keine positiven Affirmationen, die bei schlechter Verfassung eher schaden können (Wood et al. 2009).
+- **SOS**: Gefühl benennen, Atemübung (zyklisches Seufzen), Gedanken-Check (kognitive Umstrukturierung), Grübel-Parkplatz mit fester Grübelzeit, Beweis-Archiv und Hilfe-Nummern.
 
 ## Daten
 

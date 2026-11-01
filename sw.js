@@ -2,12 +2,12 @@
 // App-Dateien: sofort aus dem Cache, im Hintergrund aktualisieren (beim nächsten Öffnen neu).
 // Die Nutzerdaten liegen NICHT hier, sondern im localStorage – Updates löschen nichts.
 
-const CACHE = 'habits-v2';
+const CACHE = 'habits-v3';
 const SHELL = [
   './', 'index.html', 'manifest.webmanifest', 'css/style.css',
-  'js/app.js', 'js/store.js', 'js/logic.js', 'js/ui.js', 'js/library.js', 'js/icons-data.js',
+  'js/app.js', 'js/store.js', 'js/logic.js', 'js/ui.js', 'js/library.js', 'js/icons-data.js', 'js/facts.js',
   'js/views/today.js', 'js/views/habit.js', 'js/views/mood.js', 'js/views/stats.js',
-  'js/views/more.js', 'js/views/review.js', 'js/views/welcome.js',
+  'js/views/more.js', 'js/views/review.js', 'js/views/welcome.js', 'js/views/sos.js',
   'icons/icon-192.png', 'icons/apple-touch-icon.png',
 ];
 

@@ -768,6 +768,96 @@ textarea { resize: vertical; min-height: 70px; }
 .switch:checked { background: var(--green); }
 .switch:checked::after { transform: translateX(24px); }
 
+/* --- Fakten, SOS, Beweise ---------------------------------------------- */
+.head-btns { display: flex; gap: 10px; flex: none; }
+.sos-btn {
+  background: var(--pink);
+  font-family: var(--vt); font-size: 21px; line-height: 1;
+  text-decoration: none;
+}
+
+.fact {
+  position: relative;
+  padding: 14px 16px 12px;
+  background: #fffbe8;
+  border: var(--line) solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.fact-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-family: var(--vt); font-size: 20px; }
+.fact-head b { font-weight: 400; }
+.bulb { width: 18px; height: 22px; }
+.fact p { margin: 0 0 6px; font-weight: 500; }
+.fact small { font-family: var(--vt); font-size: 16px; color: var(--ink-soft); }
+.fact-actions { display: flex; gap: 18px; margin-top: 8px; }
+.fact-actions .link { font-size: 14px; }
+
+.sos-banner {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px;
+  background: #fde3ee;
+  border: var(--line) solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  text-decoration: none;
+}
+.sos-banner span { flex: 1; display: flex; flex-direction: column; }
+.sos-banner small { font-size: 14px; color: var(--ink-soft); }
+
+.evidence { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.evidence li { display: flex; gap: 10px; align-items: flex-start; }
+.evidence li > .ico, .evidence li > .pix { flex: none; margin-top: 1px; }
+.face-xs { width: 24px; height: 24px; }
+
+.feelings { display: flex; flex-wrap: wrap; gap: 8px; }
+.feelings .chip { font-size: 15px; padding: 7px 13px; }
+.chip.sel { background: var(--pink); box-shadow: 2px 2px 0 var(--ink); }
+.feeling-answer { margin-top: 14px; padding-top: 14px; border-top: 2px dashed rgba(59, 40, 38, 0.25); }
+.feeling-answer p { margin: 0 0 8px; }
+.win-heading.sm { font-size: 16px; margin: 6px 0 8px; }
+.lib-item > .ico:last-child { align-self: center; color: var(--ink-soft); }
+.lib-item.sel { background: #e7f6e1; }
+
+.phone-list { display: flex; flex-direction: column; gap: 8px; }
+.phone-list .btn { justify-content: flex-start; font-size: 15px; text-align: left; gap: 10px; }
+.phone-list .btn span { display: flex; flex-direction: column; }
+.phone-list small { color: var(--ink-soft); font-weight: 400; font-size: 13px; }
+
+.breath-stage { height: 220px; display: grid; place-items: center; }
+.breath-box {
+  width: 180px; height: 180px;
+  display: grid; place-items: center;
+  background: var(--teal);
+  border: var(--line) solid var(--ink);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  transform: scale(0.5);
+}
+.breath-heart { width: 56px; height: 52px; }
+.breath-text { text-align: center; font-weight: 700; font-size: 20px; min-height: 28px; margin: 6px 0 2px; }
+
+.range-pink { --c: var(--pink); }
+.quote { font-style: italic; margin: 0 0 12px; }
+.traps { display: flex; flex-direction: column; gap: 8px; }
+.trap {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 2px;
+  padding: 10px 12px;
+  text-align: left;
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: 6px;
+}
+.trap small { color: var(--ink-soft); }
+.trap.sel { background: var(--yellow); box-shadow: 2px 2px 0 var(--ink); }
+
+.parked { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+.parked li { padding: 10px 12px; background: #fff; border: 2px solid var(--ink); border-radius: 6px; }
+.parked p { margin: 0; font-style: italic; }
+.parked small { font-family: var(--vt); font-size: 15px; color: var(--ink-soft); }
+.parked-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.parked-actions .btn { font-size: 14px; padding-inline: 10px; }
+.time-input { font-size: 17px; padding: 6px 8px; border: 2px solid var(--ink); border-radius: 6px; background: #fff; }
+
 /* --- Navigation (Taskleiste) ------------------------------------------ */
 .nav {
   position: fixed;

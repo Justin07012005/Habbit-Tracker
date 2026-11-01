@@ -8,6 +8,7 @@ import {
   logOf, isScheduled, isPaused,
 } from '../logic.js';
 import { icon, esc, win, bar, face, pix, MOOD_LABEL, SPARKLE, burst, blip } from '../ui.js';
+import { factCard, evidenceWindow } from './sos.js';
 
 const ENERGY = { 1: 'Leer', 2: 'Müde', 3: 'Geht so', 4: 'Wach', 5: 'Voller Energie' };
 const sleepText = (v) => `${fmtNum(v, v % 1 ? 1 : 0)} Std.`;
@@ -189,9 +190,14 @@ function insightWindow() {
 const paintAll = (root) => root.querySelectorAll('.range').forEach(paintRange);
 
 export function view() {
+  const mood = state.moods[today()]?.mood;
   const html = `
     <header class="page-head"><div><h1>Check-in</h1><span class="pill">10 Sekunden für dich</span></div></header>
     ${win({ title: 'check-in.exe', color: 'pink', body: checkinForm(today()) })}
+    ${mood && mood <= 2 ? `
+      <a class="sos-banner" href="#/sos">${face(mood, 'face-md')}<span><b>Danke, dass du ehrlich bist.</b><small>Atmen, Gedanken sortieren oder mit jemandem reden: Hier geht's zu SOS.</small></span>${icon('chevron-right')}</a>
+      ${factCard('badMood')}
+      ${evidenceWindow()}` : ''}
     ${win({ title: 'stimmung.exe', color: 'teal', body: moodCalendar() })}
     ${badDays()}
     ${insightWindow()}

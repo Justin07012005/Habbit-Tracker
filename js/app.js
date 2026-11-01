@@ -9,6 +9,7 @@ import * as stats from './views/stats.js';
 import * as more from './views/more.js';
 import * as review from './views/review.js';
 import * as welcome from './views/welcome.js';
+import * as sos from './views/sos.js';
 
 const ROUTES = [
   [/^#?\/?$|^#\/today$/, today.view, 'today'],
@@ -22,9 +23,13 @@ const ROUTES = [
   [/^#\/edit\/(.+)$/, (id) => habit.editView(null, id), null],
   [/^#\/habit\/(.+)$/, habit.detailView, null],
   [/^#\/welcome$/, welcome.view, null],
+  [/^#\/sos$/, sos.sosView, null],
+  [/^#\/sos\/breathe$/, sos.breatheView, null],
+  [/^#\/sos\/thought$/, sos.thoughtView, null],
+  [/^#\/sos\/park$/, sos.parkView, null],
 ];
 
-const ACTIONS = { ...today.actions, ...habit.actions, ...mood.actions, ...stats.actions, ...more.actions, ...review.actions, ...welcome.actions };
+const ACTIONS = { ...today.actions, ...habit.actions, ...mood.actions, ...stats.actions, ...more.actions, ...review.actions, ...welcome.actions, ...sos.actions };
 
 const NAV = [
   ['today', '#/today', 'home', 'Heute'],
