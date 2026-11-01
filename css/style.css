@@ -554,6 +554,7 @@ textarea { resize: vertical; min-height: 70px; }
 }
 .lib-item.sel { background: #e7f6e1; }
 .lib-item.sel .pick-box { background: var(--green); }
+.lib-item.sel .pick-box.remove { background: #fff; }
 
 .sticky-actions {
   position: sticky;

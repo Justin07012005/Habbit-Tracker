@@ -1,7 +1,7 @@
-// Erster Start: kurze Einführung und bis zu 3 Habits auswählen.
+// Erster Start: kurze Einführung, dann bis zu 3 Habits auswählen oder selbst anlegen.
 
-import { state, update, saveHabit } from '../store.js';
-import { render, toast } from '../app.js';
+import { state, update, saveHabit, deleteHabit } from '../store.js';
+import { render, go, toast } from '../app.js';
 import { LIBRARY, findTemplate } from '../library.js';
 import { icon, esc, win, pix, SPARKLE, HEART, CURSOR } from '../ui.js';
 
@@ -9,8 +9,11 @@ let step = 1;
 const picked = new Set();
 const MAX = 3;
 
+// Eigene Habits, die während der Einrichtung angelegt wurden, zählen mit
+const count = () => picked.size + state.habits.length;
+
 export function view() {
-  if (step === 1) {
+  if (step === 1 && !state.habits.length) {
     return `
       <div class="welcome-art">${pix(HEART, 'heart-big')}${pix(SPARKLE, 'sparkle-big')}</div>
       <header class="hero"><h1>Hey, schön dass du da bist.</h1><span class="pill">Dein Habit-Tracker</span></header>
@@ -26,9 +29,22 @@ export function view() {
       })}`;
   }
 
+  const own = state.habits;
   return `
     <header class="hero"><h1>Womit fängst du an?</h1><span class="pill">Wähl 1 bis 3</span></header>
-    <div class="bubble"><p>Weniger ist mehr: Mit wenigen Habits gleichzeitig hält man deutlich länger durch. Du kannst später jederzeit welche hinzufügen.</p></div>
+    <div class="bubble"><p>Weniger ist mehr: Mit wenigen Habits gleichzeitig hält man deutlich länger durch. Später kannst du jederzeit weitere hinzufügen.</p></div>
+
+    <h2 class="section-title">Deine eigenen</h2>
+    <div class="lib-list">
+      ${own.map((h) => `
+        <div class="lib-item sel">
+          <span class="tile bg-${h.color}">${icon(h.icon)}</span>
+          <span class="lib-text"><b>${esc(h.name)}</b>${h.anchor ? `<span>${esc(h.anchor)}</span>` : ''}</span>
+          <button class="pick-box remove" data-act="welcomeRemove" data-id="${h.id}" aria-label="${esc(h.name)} entfernen">${icon('close')}</button>
+        </div>`).join('')}
+      <button class="add-btn" data-act="welcomeOwn">${icon('plus')} Eigenes Habit anlegen</button>
+    </div>
+
     ${LIBRARY.map((g) => `
       <h2 class="section-title">${g.group}</h2>
       <div class="lib-list">${g.items.map((t) => `
@@ -38,11 +54,17 @@ export function view() {
           <span class="pick-box">${picked.has(t.key) ? icon('check') : ''}</span>
         </button>`).join('')}
       </div>`).join('')}
+
     <div class="sticky-actions">
-      <a class="btn" href="#/new">${icon('plus')} Eigenes</a>
-      <button class="btn btn-ok" data-act="welcomeDone" ${picked.size ? '' : 'disabled'}>Start ${picked.size}/${MAX}</button>
+      <button class="btn btn-ok" data-act="welcomeDone" ${count() ? '' : 'disabled'}>Starten mit ${count()} von ${MAX}</button>
     </div>`;
 }
+
+const full = () => {
+  if (count() < MAX) return false;
+  toast(`Höchstens ${MAX} zum Start. Später kannst du jederzeit mehr hinzufügen.`);
+  return true;
+};
 
 export const actions = {
   welcomeNext() { step = 2; render(); window.scrollTo(0, 0); },
@@ -50,8 +72,16 @@ export const actions = {
   welcomePick(el) {
     const k = el.dataset.key;
     if (picked.has(k)) picked.delete(k);
-    else if (picked.size >= MAX) { toast(`Höchstens ${MAX} zum Start, später kannst du mehr hinzufügen`); return; }
-    else picked.add(k);
+    else if (!full()) picked.add(k);
+    render();
+  },
+
+  welcomeOwn() {
+    if (!full()) go('#/new');
+  },
+
+  welcomeRemove(el) {
+    deleteHabit(el.dataset.id);
     render();
   },
 

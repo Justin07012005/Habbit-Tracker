@@ -6,6 +6,8 @@ import { today, addDays } from './logic.js';
 const KEY = 'habbit-tracker.v1';
 const listeners = new Set();
 
+export const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
+
 const fresh = () => ({
   version: 1,
   habits: [],
@@ -23,20 +25,39 @@ const fresh = () => ({
 });
 
 function load() {
+  let raw = null;
   try {
-    const raw = localStorage.getItem(KEY);
+    raw = localStorage.getItem(KEY);
     if (raw) {
       const data = JSON.parse(raw);
       const base = fresh();
-      return { ...base, ...data, settings: { ...base.settings, ...data.settings } };
+      return repair({ ...base, ...data, settings: { ...base.settings, ...data.settings } });
     }
   } catch (e) {
     console.error('Laden fehlgeschlagen', e);
+    // Alte Daten beiseitelegen, damit das nächste Speichern sie nicht überschreibt
+    try { if (raw) localStorage.setItem(`${KEY}.rescue-${Date.now()}`, raw); } catch { /* nichts mehr zu retten */ }
   }
   return fresh();
 }
 
+// Frühe Version hat eigene Habits ohne ID gespeichert (Haken lagen unter "undefined")
+let repaired = false;
+function repair(s) {
+  for (const h of s.habits) {
+    if (h.id) continue;
+    h.id = uid();
+    repaired = true;
+    for (const entry of Object.values(s.logs)) {
+      if (entry.undefined) { entry[h.id] = entry.undefined; delete entry.undefined; }
+    }
+    if (s.celebrated.undefined) { s.celebrated[h.id] = s.celebrated.undefined; delete s.celebrated.undefined; }
+  }
+  return s;
+}
+
 export let state = load();
+if (repaired) save();
 
 export function save() {
   try {
@@ -64,8 +85,6 @@ export async function requestPersistence() {
   }
 }
 
-export const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
-
 // --- Habits & Einträge --------------------------------------------------
 
 export function toggleLog(habitId, day, kind = 'full') {
@@ -88,9 +107,9 @@ export function cycleLog(habitId, day) {
   });
 }
 
-export function saveHabit(data) {
+export function saveHabit({ id, ...data }) {
   update((s) => {
-    const existing = s.habits.find((h) => h.id === data.id);
+    const existing = id && s.habits.find((h) => h.id === id);
     if (existing) Object.assign(existing, data);
     else s.habits.push({ id: uid(), createdAt: today(), archived: false, pauses: [], ...data });
   });
@@ -156,7 +175,7 @@ export async function importBackup(file) {
   const data = parsed.data || parsed;
   if (!Array.isArray(data.habits) || typeof data.logs !== 'object') throw new Error('Keine gültige Backup-Datei');
   const base = fresh();
-  state = { ...base, ...data, settings: { ...base.settings, ...data.settings, onboarded: true } };
+  state = repair({ ...base, ...data, settings: { ...base.settings, ...data.settings, onboarded: true } });
   save();
 }
 

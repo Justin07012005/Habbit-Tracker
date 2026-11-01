@@ -163,11 +163,10 @@ export function view() {
       ${planned.length ? badDay : ''}
       <div class="stack">${planned.map(habitWindow).join('')}</div>
       ${off.length ? `<h2 class="section-title">Heute frei</h2><div class="off-list">${off.map(offRow).join('')}</div>` : ''}
+      <a class="add-btn" href="#/library">${icon('plus')} Neues Habit</a>
     `}
 
     ${moodWindow()}
-
-    ${habits.length ? `<a class="add-btn" href="#/library">${icon('plus')} Neues Habit</a>` : ''}
   `;
   return html;
 }

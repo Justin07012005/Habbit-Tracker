@@ -227,8 +227,10 @@ export const actions = {
     if (!name) return;
     if (!days.length) { toast('Wähl mindestens einen Tag'); return; }
     const id = form.dataset.id || undefined;
+    const onboarding = !state.settings.onboarded;
 
-    if (!id) {
+    // Während der Einrichtung begrenzt die Auswahlseite selbst auf 3
+    if (!id && !onboarding) {
       const running = activeHabits(state).filter((h) => !isPausedNow(h));
       const shaky = running.filter((h) => habitStats(state, h).strength < 0.5);
       if (running.length >= 3 && shaky.length) {
@@ -243,9 +245,10 @@ export const actions = {
     }
 
     saveHabit({ id, name, icon: f.get('icon'), color: f.get('color'), anchor: f.get('anchor').trim(), mini: f.get('mini').trim(), days });
-    if (!state.settings.onboarded) update((s) => { s.settings.onboarded = true; });
     toast(id ? 'Gespeichert' : 'Habit angelegt');
-    if (id) back(); else location.replace('#/today');
+    if (onboarding) location.replace('#/welcome');
+    else if (id) back();
+    else location.replace('#/today');
   },
 
   cycleDay(el) {
