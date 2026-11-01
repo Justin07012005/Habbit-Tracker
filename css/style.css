@@ -790,6 +790,25 @@ textarea { resize: vertical; min-height: 70px; }
 .fact p { margin: 0 0 6px; font-weight: 500; }
 .fact small { font-family: var(--vt); font-size: 16px; color: var(--ink-soft); }
 .fact-actions { display: flex; gap: 18px; margin-top: 8px; }
+
+.chips.wrap { flex-wrap: wrap; overflow: visible; margin: 0; padding: 0; }
+.fact-big { padding: 18px 18px 16px; min-height: 230px; display: flex; flex-direction: column; }
+.fact-big p { font-size: 20px; line-height: 1.35; font-weight: 600; flex: 1; margin: 6px 0 10px; }
+.fact-count { margin-left: auto; color: var(--ink-soft); }
+.fav-btn {
+  align-self: flex-start;
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 12px;
+  padding: 6px 12px;
+  font-weight: 600;
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+}
+.fav-btn .ico { width: 18px; height: 18px; }
+.fav-btn.on { background: #fde3ee; }
+.fav-heart { width: 16px; height: 15px; }
+.fact-nav { display: grid; grid-template-columns: 64px 1fr 64px; gap: 10px; }
 .fact-actions .link { font-size: 14px; }
 
 .sos-banner {

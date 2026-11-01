@@ -4,7 +4,7 @@
 import { state, update, uid } from '../store.js';
 import { render, go, toast } from '../app.js';
 import { today, fmtDate, habitStats, activeHabits } from '../logic.js';
-import { pickFact } from '../facts.js';
+import { pickFact, FACTS, CATEGORIES } from '../facts.js';
 import { icon, pix, esc, win, face, burst, blip, SPARKLE, HEART } from '../ui.js';
 
 const BULB = [
@@ -34,9 +34,50 @@ export function factCard(category, dismissKey = null) {
     <small>${esc(f.source)}</small>
     <div class="fact-actions">
       <button class="link" data-act="nextFact" data-cat="${category}">Noch einer</button>
+      <a class="link" href="#/facts">Alle Fakten</a>
       ${dismissKey ? `<button class="link" data-act="dismiss" data-key="${dismissKey}">Okay</button>` : ''}
     </div>
   </div>`;
+}
+
+// --- Alle Fakten zum Durchblättern ---------------------------------------------
+
+const ALL_FACTS = Object.entries(FACTS).flatMap(([cat, list]) => list.map((f) => ({ ...f, cat })));
+const favs = () => state.settings.favFacts || [];
+let browse = { cat: 'all', i: 0 };
+
+function browseList() {
+  if (browse.cat === 'fav') return ALL_FACTS.filter((f) => favs().includes(f.text));
+  if (browse.cat === 'all') return ALL_FACTS;
+  return ALL_FACTS.filter((f) => f.cat === browse.cat);
+}
+
+export function factsView() {
+  const list = browseList();
+  const i = Math.min(browse.i, Math.max(0, list.length - 1));
+  const f = list[i];
+  const chips = [['all', 'Alle'], ['fav', `Gemerkt${favs().length ? ` (${favs().length})` : ''}`], ...Object.entries(CATEGORIES)];
+  const isFav = f && favs().includes(f.text);
+
+  return `
+    ${backBtn()}
+    <header class="page-head"><div><h1>Fakten</h1><span class="pill">Psychologie, die hilft</span></div>${pix(BULB, 'sparkle-head')}</header>
+    <div class="chips wrap">${chips.map(([k, label]) => `<button class="chip ${browse.cat === k ? 'sel' : ''}" data-act="factsCat" data-cat="${k}">${label}</button>`).join('')}</div>
+    ${f ? `
+      <div class="fact fact-big">
+        <div class="fact-head">${pix(BULB, 'bulb')}<b>${CATEGORIES[f.cat]}</b><span class="fact-count">${i + 1} / ${list.length}</span></div>
+        <p>${esc(f.text)}</p>
+        <small>${esc(f.source)}</small>
+        <button class="fav-btn ${isFav ? 'on' : ''}" data-act="factFav" aria-pressed="${isFav}">${isFav ? pix(HEART, 'fav-heart') : icon('heart')} ${isFav ? 'Gemerkt' : 'Merken'}</button>
+      </div>
+      <div class="fact-nav">
+        <button class="btn" data-act="factMove" data-dir="-1" aria-label="Vorheriger Fakt">${icon('chevron-left')}</button>
+        <button class="btn btn-ok" data-act="factRandom">Zufällig</button>
+        <button class="btn" data-act="factMove" data-dir="1" aria-label="Nächster Fakt">${icon('chevron-right')}</button>
+      </div>`
+    : `<div class="fact fact-big"><p>Noch nichts gemerkt. Tipp bei einem Fakt auf „Merken“, dann findest du ihn hier wieder.</p></div>`}
+    <p class="hint center">Echte Erkenntnisse aus der Forschung, keine Sprüche. Jeder Fakt hat eine Quelle.</p>
+  `;
 }
 
 // --- Beweis-Archiv ---------------------------------------------------------
@@ -122,6 +163,7 @@ const TOOLS = {
   evidence: { href: '#evidence', icon: 'trophy', color: 'green', name: 'Deine Beweise', desc: 'Was du schon geschafft hast, schwarz auf weiß.' },
   people: { href: '#people', icon: 'chat', color: 'pink', name: 'Mit jemandem reden', desc: 'Freunde oder anonym und kostenlos am Telefon.' },
   mini: { href: '#/today', icon: 'checklist', color: 'orange', name: 'Eine Mini-Version machen', desc: 'Nur ein winziger Schritt, und er zählt voll.' },
+  facts: { href: '#/facts', icon: 'lightbulb', color: 'yellow', name: 'Fakten durchblättern', desc: 'Psychologie, die dich aus dem Gedankenkarussell holt.' },
 };
 
 let feeling = null;
@@ -157,7 +199,7 @@ export function sosView() {
     })}
 
     <h2 class="section-title">Alle Werkzeuge</h2>
-    <div class="lib-list">${['breathe', 'thought', 'park', 'evidence', 'people'].map((t) => toolCard(t)).join('')}</div>
+    <div class="lib-list">${['breathe', 'thought', 'park', 'facts', 'evidence', 'people'].map((t) => toolCard(t)).join('')}</div>
 
     <div id="evidence">${evidenceWindow()}</div>
 
@@ -345,6 +387,28 @@ function paint(el) {
 
 export const actions = {
   goTo: (el) => go(el.dataset.to),
+  factsCat(el) { browse = { cat: el.dataset.cat, i: 0 }; render(); },
+  factMove(el) {
+    const n = browseList().length;
+    if (n) browse.i = (browse.i + Number(el.dataset.dir) + n) % n;
+    render();
+  },
+  factRandom() {
+    const n = browseList().length;
+    if (n > 1) { let j; do { j = Math.floor(Math.random() * n); } while (j === browse.i); browse.i = j; }
+    render();
+  },
+  factFav() {
+    const list = browseList();
+    const f = list[Math.min(browse.i, list.length - 1)];
+    update((s) => {
+      const set = new Set(s.settings.favFacts || []);
+      if (set.has(f.text)) set.delete(f.text); else set.add(f.text);
+      s.settings.favFacts = [...set];
+    });
+    if (browse.cat === 'fav' && browse.i >= browseList().length) browse.i = Math.max(0, browseList().length - 1);
+    render();
+  },
   nextFact(el) {
     const c = el.dataset.cat;
     factOffset[c] = (factOffset[c] || 0) + 1;

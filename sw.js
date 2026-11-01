@@ -2,7 +2,7 @@
 // App-Dateien: sofort aus dem Cache, im Hintergrund aktualisieren (beim nächsten Öffnen neu).
 // Die Nutzerdaten liegen NICHT hier, sondern im localStorage – Updates löschen nichts.
 
-const CACHE = 'habits-v3';
+const CACHE = 'habits-v4';
 const SHELL = [
   './', 'index.html', 'manifest.webmanifest', 'css/style.css',
   'js/app.js', 'js/store.js', 'js/logic.js', 'js/ui.js', 'js/library.js', 'js/icons-data.js', 'js/facts.js',

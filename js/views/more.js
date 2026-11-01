@@ -45,6 +45,12 @@ export function view() {
   return `
     <header class="page-head"><div><h1>Mehr</h1><span class="pill">Einstellungen</span></div></header>
     ${install}
+    <div class="lib-list">
+      <a class="lib-item" href="#/facts"><span class="tile bg-yellow">${icon('lightbulb')}</span>
+        <span class="lib-text"><b>Fakten durchblättern</b><span>Psychologie, die hilft, mit Quellen. Lieblingsfakten merken.</span></span>${icon('chevron-right')}</a>
+      <a class="lib-item" href="#/sos"><span class="tile bg-pink">${icon('heart')}</span>
+        <span class="lib-text"><b>SOS</b><span>Atmen, Gedanken-Check, Grübel-Parkplatz und Hilfe.</span></span>${icon('chevron-right')}</a>
+    </div>
     ${win({ title: 'backup.exe', color: 'orange', body: backup })}
     ${win({ title: 'einstellungen.exe', color: 'yellow', body: `
       <label class="switch-row"><span>${icon('music')} Sound beim Abhaken</span>
