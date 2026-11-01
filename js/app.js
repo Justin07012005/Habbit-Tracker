@@ -13,6 +13,7 @@ import * as welcome from './views/welcome.js';
 const ROUTES = [
   [/^#?\/?$|^#\/today$/, today.view, 'today'],
   [/^#\/mood$/, mood.view, 'mood'],
+  [/^#\/day\/(\d{4}-\d{2}-\d{2})$/, mood.dayView, 'mood'],
   [/^#\/stats$/, stats.view, 'stats'],
   [/^#\/more$/, more.view, 'more'],
   [/^#\/review$/, review.view, null],

@@ -4,6 +4,7 @@ import { state } from '../store.js';
 import { habitStats, activeHabits, dayRatio, isPausedNow } from '../logic.js';
 import { icon, esc, win, bar, pct, strengthLabel } from '../ui.js';
 import { yearGrid } from './habit.js';
+import { moodCalendar } from './mood.js';
 
 function card(h) {
   const s = habitStats(state, h);
@@ -43,6 +44,9 @@ export function view() {
 
     ${win({ title: 'jahr.exe', color: 'blue', body: `<p class="win-heading">Dein Jahr</p>${year}
       <div class="legend"><i></i>nichts <i class="on lvl1"></i>etwas <i class="on lvl2"></i>halb <i class="on bg-green"></i>alles</div>` })}
+
+    ${checkins ? win({ title: 'stimmung.exe', color: 'pink', body: `<p class="win-heading">Deine Check-ins</p>${moodCalendar()}
+      <a class="btn btn-block" href="#/mood">${icon('mood-sad')} Schlechte Tage &amp; Muster</a>` }) : ''}
 
     ${habits.length ? `<h2 class="section-title">Deine Habits</h2><div class="stack">${habits.map(card).join('')}</div>`
       : `<p class="muted center">Noch keine Habits. <a href="#/library">Jetzt eins anlegen</a></p>`}
